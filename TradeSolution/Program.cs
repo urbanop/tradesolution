@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using TradeSolution.Application.Factory;
 using TradeSolution.Application.Services.Trade;
 using TradeSolution.Domain.Contracts;
-using TradeSolution.Factory;
 using TradeSolution.Infra.Data.Repository;
 
 namespace TradeSolution

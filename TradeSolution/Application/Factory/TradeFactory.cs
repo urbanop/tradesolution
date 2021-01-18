@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using TradeSolution.Domain.Contracts;
+using TradeSolution.Domain.Entities;
 
-namespace TradeSolution.Factory
+namespace TradeSolution.Application.Factory
 {
     public static class TradeFactory
     {
@@ -9,10 +10,10 @@ namespace TradeSolution.Factory
         {
             return new List<ITrade>
             {
-                new Trade1(),
-                new Trade2(),
-                new Trade3(),
-                new Trade4()
+                new Trade(2000000, "Private"),
+                new Trade(400000, "Public"),
+                new Trade(500000, "Public"),
+                new Trade(3000000, "Public")
             };
         }
     }

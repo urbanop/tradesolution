@@ -2,7 +2,7 @@
 
 namespace TradeSolution.Domain.Entities
 {
-    public class Trade : AggregateRoot, ITrade
+    public class Trade :  ITrade
     {
         public double Value { get; }
 
