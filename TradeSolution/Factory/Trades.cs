@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TradeSolution.Domain.Contracts;
+﻿using TradeSolution.Domain.Contracts;
 
 namespace TradeSolution.Factory
 {

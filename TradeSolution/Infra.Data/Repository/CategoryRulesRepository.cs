@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using TradeSolution.Domain.Contracts;
 using TradeSolution.Domain.Entities;
 using TradeSolution.Infra.Data.Context;
