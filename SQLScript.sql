@@ -1,4 +1,4 @@
--- criaÃ§Ã£o da tabela
+-- criação da tabela
 CREATE TABLE [dbo].[CategoryRule](
 	[ID] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [varchar](50) NULL,
