@@ -1,0 +1,85 @@
+  [HttpGet("gerar")]
+        public IActionResult Gerar()
+        {
+
+            var teste = GerarDataTable();
+
+            return GenerateExcel2007(teste);
+        }
+        private DataTable GerarDataTable()
+        {
+            List<TesteViewModel> lista = new List<TesteViewModel>();
+            for (int i = 0; i < 100000; i++)
+            {
+                lista.Add(new TesteViewModel
+                {
+                    Teste1 = "PAULO CASSADREDAS 1",
+                    Teste2 = "DASDASDASD 2",
+                    Teste3 = "DASDASDASDSSS 3",
+                    Teste4 = "TESTE 4",
+                    Teste5 = 100.36M +i,
+                    Teste6 = "TESTE 6",
+                    Teste8 = 200.25M + i,
+                    Teste9 = 300.36 + i,
+                    Teste10 = 400 + i
+                });
+            }
+
+            Type entityType = typeof(TesteViewModel);
+            DataTable table = new DataTable(entityType.Name);
+
+            using (var reader = ObjectReader.Create(lista))
+            {
+                table.Load(reader);
+            }
+
+            PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(entityType);
+            foreach (PropertyDescriptor prop in properties)
+            {
+                DisplayNameAttribute attribute = (DisplayNameAttribute)prop.Attributes[typeof(DisplayNameAttribute)];
+                table.Columns[prop.Name].ColumnName = attribute.DisplayName;
+            }
+            
+            return table;
+        }
+
+        public ActionResult GenerateExcel2007(DataTable dtSrc)
+        {
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+
+            using (ExcelPackage objExcelPackage = new ExcelPackage())
+            {
+                //Create the worksheet    
+                ExcelWorksheet objWorksheet = objExcelPackage.Workbook.Worksheets.Add("Teste");
+                objWorksheet.Cells["A1"].LoadFromDataTable(dtSrc, true, OfficeOpenXml.Table.TableStyles.None);
+                
+                var teste = objWorksheet.Cells.Last().Address;
+
+                objWorksheet.View.ShowGridLines = false;
+
+                //Format the header    
+                using (ExcelRange objRange = objWorksheet.Cells[$"A1:J1"])
+                {
+                    objRange.Style.Font.Bold = true;
+                    objRange.Style.Font.Color.SetColor(Color.White);
+                    objRange.Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    objRange.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    objRange.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    objRange.Style.Fill.BackgroundColor.SetColor(Color.Green);
+                }
+
+                using (ExcelRange objRange = objWorksheet.Cells[$"A1:{teste}"])
+                {
+                    objRange.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    objRange.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                    objRange.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    objRange.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                }
+
+                objWorksheet.Cells.AutoFitColumns();
+
+                return File(objExcelPackage.GetAsByteArray(), 
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    "Teste.xlsx");
+            }
+        }
